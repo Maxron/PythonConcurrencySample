@@ -70,9 +70,25 @@ def custom_operator2():
     )
 
 
+def my_test_observable():
+    def _my_observalbe(observer, scheduler):
+        observer.on_next("Hello")
+        observer.on_next("World")
+        observer.on_completed()
+    return rx.create(_my_observalbe)
+
+
+def my_test():
+    my_test_observable().subscribe(
+        on_next=lambda value: print("value:{}".format(value)),
+        on_completed=lambda: print("completed")
+    )
+
+
 if __name__ == '__main__':
     # show_subscribe()
     # show_composed()
     # show_chain()
     # custom_operator()
-    custom_operator2()
+    # custom_operator2()
+    my_test()
