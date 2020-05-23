@@ -1,5 +1,5 @@
 import rx
-from rx import of, operators
+from rx import of, operators, Observable
 from rx.core.typing import Observer
 
 source = of('Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon')
@@ -46,8 +46,8 @@ def custom_operator():
     )
 
 
-def lowercase():
-    def _lowercase(source: rx.Observable):
+def lowercase() -> Observable:
+    def _lowercase(source: rx.Observable) -> Observable:
         def subscribe(observer: Observer, scheduler=None):
             def on_next(value):
                 observer.on_next(value.lower())
@@ -70,7 +70,7 @@ def custom_operator2():
     )
 
 
-def my_test_observable():
+def my_test_observable() -> Observable:
     def _my_observalbe(observer, scheduler):
         observer.on_next("Hello")
         observer.on_next("World")
