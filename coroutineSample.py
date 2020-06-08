@@ -19,7 +19,8 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
 
     # Create Task from coroutine
-    task = loop.create_task(coroutine)
+    # task = loop.create_task(coroutine)
+    task = asyncio.ensure_future(coroutine)
     print(task) # Pending task
 
     # Add task to event loop
