@@ -14,13 +14,17 @@ if __name__ == '__main__':
 
     # Declare a coroutine but not execute
     coroutine = do_some_work(2)
-    print(coroutine)
 
     # Create a event loop
     loop = asyncio.get_event_loop()
 
-    # Add coroutine to event loop
-    loop.run_until_complete(coroutine)
+    # Create Task from coroutine
+    task = loop.create_task(coroutine)
+    print(task) # Pending task
+
+    # Add task to event loop
+    loop.run_until_complete(task)
+    print(task) # Finished task
 
     print("Time: ", now() - start)
 
