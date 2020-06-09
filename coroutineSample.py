@@ -11,14 +11,12 @@ async def do_some_work(x):
     return "Done after {}s".format(x)
 
 
-def callback(future: Task):
-    print("callback: ", future.result())
+if __name__ == '__main__':
+    start = now()
 
-
-async def main():
-    coroutine1 = do_some_work(4)
+    coroutine1 = do_some_work(1)
     coroutine2 = do_some_work(2)
-    coroutine3 = do_some_work(1)
+    coroutine3 = do_some_work(4)
 
     tasks = [
         asyncio.ensure_future(coroutine1),
@@ -26,15 +24,16 @@ async def main():
         asyncio.ensure_future(coroutine3)
     ]
 
-    for task in asyncio.as_completed(tasks):
-        result = await task
-        print("Task ret: {}".format(result))
-
-
-if __name__ == '__main__':
-    start = now()
-
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    try:
+        loop.run_until_complete(asyncio.wait(tasks))
+    except KeyboardInterrupt as e:
+        print(asyncio.Task.all_tasks())
+        for task in asyncio.Task.all_tasks():
+            print(task.cancel())
+        loop.stop()
+        loop.run_forever()
+    finally:
+        loop.close()
 
     print("Time: ", now() - start)
