@@ -18,16 +18,20 @@ def callback(future: Task):
 if __name__ == '__main__':
     start = now()
 
-    # Declare a coroutine but not execute
-    coroutine = do_some_work(2)
-    # Create a event loop
-    loop = asyncio.get_event_loop()
-    # Create Task from coroutine
-    task = loop.create_task(coroutine)
-    # Add callback
-    task.add_done_callback(callback)
-    # Add task to event loop
-    loop.run_until_complete(task)
+    coroutine1 = do_some_work(1)
+    coroutine2 = do_some_work(2)
+    coroutine3 = do_some_work(4)
 
-    print("Task ret: ", task.result())
+    tasks = [
+        asyncio.ensure_future(coroutine1),
+        asyncio.ensure_future(coroutine2),
+        asyncio.ensure_future(coroutine3)
+    ]
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(asyncio.wait(tasks))
+
+    for task in tasks:
+        print("Task ret:", task.result())
+
     print("Time: ", now() - start)
