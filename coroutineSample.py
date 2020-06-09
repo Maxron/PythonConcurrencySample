@@ -26,14 +26,14 @@ async def main():
         asyncio.ensure_future(coroutine3)
     ]
 
-    return await asyncio.gather(*tasks)
+    return await asyncio.wait(tasks)
 
 if __name__ == '__main__':
     start = now()
 
     loop = asyncio.get_event_loop()
-    results = loop.run_until_complete(main())
-    for result in results:
-        print("Task ret:", result)
+    dones, pending = loop.run_until_complete(main())
+    for task in dones:
+        print("Task ret:", task.result())
 
     print("Time: ", now() - start)
