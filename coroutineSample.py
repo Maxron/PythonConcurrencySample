@@ -16,6 +16,12 @@ def more_work(x):
     print('Finished more work:', x)
 
 
+async def do_some_work(x):
+    print('Waiting {}'.format(x))
+    await asyncio.sleep(x)
+    print('Done after {}s'.format(x))
+
+
 if __name__ == '__main__':
     start = now()
     new_loop = asyncio.new_event_loop()
@@ -23,5 +29,8 @@ if __name__ == '__main__':
     thread.start()
     print("TIME: {}".format(time.time() - start))
 
-    new_loop.call_soon_threadsafe(more_work, 4)
-    new_loop.call_soon_threadsafe(more_work, 3)
+    # new_loop.call_soon_threadsafe(more_work, 4)
+    # new_loop.call_soon_threadsafe(more_work, 3)
+
+    asyncio.run_coroutine_threadsafe(do_some_work(5), new_loop)
+    asyncio.run_coroutine_threadsafe(do_some_work(2), new_loop)
