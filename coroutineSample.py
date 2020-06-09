@@ -34,7 +34,7 @@ if __name__ == '__main__':
     tasks = [task1, task2, task3]
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(asyncio.wait(tasks))
+    loop.run_until_complete(asyncio.gather(task1, task2, task3))
 
     for task in tasks:
         print("Task ret:", task.result())
